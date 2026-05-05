@@ -72,19 +72,19 @@ export default function CompliancePage() {
         <section aria-labelledby="platform-heading" style={{ marginBottom:'28px' }}>
           <p id="platform-heading" className="section-label" style={{ marginBottom:'14px' }}>Platform compliance notes</p>
           <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(300px,1fr))', gap:'12px' }}>
-            {PLATFORM_COMPLIANCE.map(p => (
+            {Object.values(PLATFORM_COMPLIANCE).map(p => (
               <div key={p.platform} className="card-void">
                 <p style={{ fontSize:'14px', fontWeight:600, color:'var(--fcs-output)', marginBottom:'10px' }}>{p.platform}</p>
                 <div style={{ marginBottom:'8px' }}>
                   <p style={{ fontSize:'11px', fontWeight:600, color:'var(--fcs-signal)', marginBottom:'5px' }}>Compliant routes</p>
-                  {p.compliant_routes.map((r,i)=>(
+                  {[p.compliant_route].map((r,i)=>(
                     <p key={i} style={{ fontSize:'12px', color:'var(--fcs-output-dim)', marginBottom:'3px' }}>· {r}</p>
                   ))}
                 </div>
-                {p.cautions.length>0 && (
+                {p.caution && (
                   <div>
                     <p style={{ fontSize:'11px', fontWeight:600, color:'var(--fcs-signal-dark)', marginBottom:'5px' }}>Cautions</p>
-                    {p.cautions.map((r,i)=>(
+                    {[p.caution].map((r,i)=>(
                       <p key={i} style={{ fontSize:'12px', color:'var(--fcs-output-dim)', marginBottom:'3px' }}>· {r}</p>
                     ))}
                   </div>
@@ -100,13 +100,13 @@ export default function CompliancePage() {
           <div className="card-depth">
             <div style={{ display:'flex', flexDirection:'column', gap:'0' }}>
               {DOCUMENTATION_CHECKLIST.map((d,i) => (
-                <div key={d.id} style={{ display:'grid', gridTemplateColumns:'1fr auto auto', gap:'12px', alignItems:'center', padding:'10px 0', borderBottom:i<DOCUMENTATION_CHECKLIST.length-1?'1px solid var(--fcs-output-ghost)':'none' }}>
+                <div key={d.name}} style={{ display:'grid', gridTemplateColumns:'1fr auto auto', gap:'12px', alignItems:'center', padding:'10px 0', borderBottom:i<DOCUMENTATION_CHECKLIST.length-1?'1px solid var(--fcs-output-ghost)':'none' }}>
                   <div>
                     <p style={{ fontSize:'13px', fontWeight:500, color:'var(--fcs-output)' }}>{d.name}</p>
-                    <p style={{ fontSize:'11px', color:'var(--fcs-output-dim)' }}>{d.issuer}</p>
+                    <p style={{ fontSize:'11px', color:'var(--fcs-output-dim)' }}>{d.issuing_authority}</p>
                   </div>
-                  <span className="badge badge-muted">{d.est_cost}</span>
-                  <span style={{ fontSize:'11px', color:'var(--fcs-output-dim)', whiteSpace:'nowrap' }}>{d.est_time}</span>
+                  <span className="badge badge-muted">{d.estimated_cost}</span>
+                  <span style={{ fontSize:'11px', color:'var(--fcs-output-dim)', whiteSpace:'nowrap' }}>{d.estimated_time}</span>
                 </div>
               ))}
             </div>
