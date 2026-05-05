@@ -22,7 +22,7 @@ export default async function ReportPage() {
 
   const aiData        = (session?.ai_interview_data as Record<string,unknown>) ?? {}
   const alibabaWanted = ((aiData.selected_platforms as string[]) ?? []).includes('alibaba')
-  const top3          = scoreRegions(aiData.product_category as string ?? 'General', aiData.avg_order_value as string ?? 'Under $500').slice(0, 3)
+  const productCat = (aiData.product_category as string) ?? 'General' const aovValue = (aiData.avg_order_value as string) ?? 'Under $500' const top3 = scoreRegions(productCat, aovValue).slice(0, 3)
   const adScript      = generateADBankScript(aiData.product_category as string ?? 'General', alibabaWanted)
   const scoreColor    = (s: number) => s>=80?'var(--fcs-signal-light)':s>=65?'var(--fcs-signal)':'var(--fcs-signal-dark)'
 
