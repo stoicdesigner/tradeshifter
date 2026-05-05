@@ -40,16 +40,16 @@ export default function CompliancePage() {
           <p id="circulars-heading" className="section-label" style={{ marginBottom:'14px' }}>FE Circular reference</p>
           <div style={{ display:'flex', flexDirection:'column', gap:'10px' }}>
             {FE_CIRCULARS.map((c, i) => (
-              <details key={c.id} className="card-depth" style={{ cursor:'pointer' }}>
+              <details key={c.number} className="card-depth" style={{ cursor:'pointer' }}>
                 <summary style={{ display:'flex', alignItems:'center', gap:'10px', listStyle:'none', userSelect:'none', outline:'none' }}
-                  aria-label={`${c.id}: ${c.title} — expand for details`}>
-                  <span className={`badge ${i===0?'badge-signal':i===1?'badge-depth':'badge-muted'}`}>{c.id}</span>
+                  aria-label={`${c.number}: ${c.title} — expand for details`}>
+                  <span className={`badge ${i===0?'badge-signal':i===1?'badge-depth':'badge-muted'}`}>{c.number}</span>
                   <p style={{ fontSize:'14px', fontWeight:500, color:'var(--fcs-output)', flex:1 }}>{c.title}</p>
                   <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" style={{ flexShrink:0, color:'var(--fcs-signal)', transition:'transform 200ms' }}><path d="M4 6l4 4 4-4" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>
                 </summary>
                 <div style={{ marginTop:'14px', borderTop:'1px solid var(--fcs-output-ghost)', paddingTop:'14px' }}>
                   <p style={{ fontSize:'13px', color:'var(--fcs-output-dim)', lineHeight:1.7, marginBottom:'12px' }}>{c.summary}</p>
-                  <ul style={{ listStyle:'none', display:'flex', flexDirection:'column', gap:'6px', marginBottom:'12px' }} aria-label={`Key points for ${c.id}`}>
+                  <ul style={{ listStyle:'none', display:'flex', flexDirection:'column', gap:'6px', marginBottom:'12px' }} aria-label={`Key points for ${c.number}`}>
                     {c.key_points.map((pt,j) => (
                       <li key={j} style={{ display:'flex', gap:'8px', alignItems:'flex-start', fontSize:'12px', color:'var(--fcs-output-dim)' }}>
                         <span style={{ color:'var(--fcs-signal)', flexShrink:0 }} aria-hidden="true">›</span>{pt}
