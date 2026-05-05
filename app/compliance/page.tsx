@@ -100,7 +100,7 @@ export default function CompliancePage() {
           <div className="card-depth">
             <div style={{ display:'flex', flexDirection:'column', gap:'0' }}>
               {DOCUMENTATION_CHECKLIST.map((d,i) => (
-                <div key={d.name}} style={{ display:'grid', gridTemplateColumns:'1fr auto auto', gap:'12px', alignItems:'center', padding:'10px 0', borderBottom:i<DOCUMENTATION_CHECKLIST.length-1?'1px solid var(--fcs-output-ghost)':'none' }}>
+                <div key={d.name} style={{ display:'grid', gridTemplateColumns:'1fr auto auto', gap:'12px', alignItems:'center', padding:'10px 0', borderBottom:i<DOCUMENTATION_CHECKLIST.length-1?'1px solid var(--fcs-output-ghost)':'none' }}>
                   <div>
                     <p style={{ fontSize:'13px', fontWeight:500, color:'var(--fcs-output)' }}>{d.name}</p>
                     <p style={{ fontSize:'11px', color:'var(--fcs-output-dim)' }}>{d.issuing_authority}</p>
