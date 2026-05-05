@@ -1,60 +1,46 @@
-// /lib/supabase.ts
-// Tradeshifters — Supabase Client (browser + server)
+import { createBrowserClient } from '@supabase/ssr'
 
-import { createBrowserClient } from '@supabase/ssr';
-import { createServerClient, type CookieOptions } from '@supabase/ssr';
-import { cookies } from 'next/headers';
-import type { Database } from '@/types/supabase';
-
-// ─── Browser Client ───────────────────────────────────────────────────────────
-
+// ── Browser Client (use in Client Components) ─────────────────────────────────
 export function createClient() {
-  return createBrowserClient<Database>(
+  return createBrowserClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  );
+  )
 }
 
-// ─── Server Client (App Router) ───────────────────────────────────────────────
+// ── Server Client (use in Server Components / Route Handlers) ─────────────────
+// Import this function inside the server component/route handler, not at module level
+export async function createServerClientInstance() {
+  const { createServerClient } = await import('@supabase/ssr')
+  const { cookies } = await import('next/headers')
+  const cookieStore = cookies()
 
-export function createServerClientInstance() {
-  const cookieStore = cookies();
-
-  return createServerClient<Database>(
+  return createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
       cookies: {
-        get(name: string) {
-          return cookieStore.get(name)?.value;
+        getAll() {
+          return cookieStore.getAll()
         },
-        set(name: string, value: string, options: CookieOptions) {
+        setAll(cookiesToSet) {
           try {
-            cookieStore.set({ name, value, ...options });
-          } catch {
-            // Server Component — cookie setting not always available
-          }
-        },
-        remove(name: string, options: CookieOptions) {
-          try {
-            cookieStore.set({ name, value: '', ...options });
-          } catch {
-            // Server Component
-          }
+            cookiesToSet.forEach(({ name, value, options }) =>
+              cookieStore.set(name, value, options)
+            )
+          } catch {}
         },
       },
     }
-  );
+  )
 }
 
-// ─── Service Role Client (server-side only, RLS bypass for admin ops) ────────
-
-export function createServiceClient() {
-  if (!process.env.SUPABASE_SERVICE_ROLE_KEY) {
-    throw new Error('SUPABASE_SERVICE_ROLE_KEY is not set');
-  }
-  return createBrowserClient<Database>(
+// ── Service Role Client (use in API routes only) ──────────────────────────────
+export async function createServiceClient() {
+  const { createClient: createSupabaseClient } = await import('@supabase/supabase-js')
+  return createSupabaseClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY
-  );
+    process.env.SUPABASE_SERVICE_ROLE_KEY!,
+    { auth: { autoRefreshToken: false, persistSession: false } }
+  )
 }
